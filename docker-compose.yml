@@ -1,0 +1,22 @@
+
+services:
+  backend:
+    build: ./server
+    container_name: rentease-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./server/.env
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./client
+    container_name: rentease-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
