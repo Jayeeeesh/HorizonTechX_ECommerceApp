@@ -1,22 +1,39 @@
+version: "3.9"
 
 services:
   backend:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     container_name: rentease-backend
+    restart: unless-stopped
     ports:
       - "8000:8000"
     env_file:
       - ./server/.env
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 15s
+    networks:
+      - rentease-network
 
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     container_name: rentease-frontend
+    restart: unless-stopped
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    networks:
+      - rentease-network
+
+networks:
+  rentease-network:
+    driver: bridge
