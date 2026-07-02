@@ -35,6 +35,7 @@ app.use(hpp());
 const allowedOrigins = [
   "http://localhost:5173", // local dev (Vite)
   "http://localhost:3000", // Docker
+   "http://localhost:8080",
   process.env.CLIENT_URL, // production
 ].filter(Boolean);
 
