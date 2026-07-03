@@ -18,6 +18,8 @@ dist-ssr
 .env
 .env.*
 *.local
+.env.production
+
 
 # Git
 .git
