@@ -34,6 +34,25 @@ describe("Authentication API", () => {
         })
       );
     });
+
+    it("should register a new user successfully", async () => {
+      const response = await request(app)
+        .post("/api/v1/auth/register")
+        .send({
+          name: "Test User",
+          email: "testuser@example.com",
+          password: "Test@1234",
+          phone: "9876543210",
+        })
+        .expect("Content-Type", /json/)
+        .expect(201);
+
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          success: true,
+        })
+      );
+    });
   });
 
   describe("POST /api/v1/auth/login", () => {
@@ -64,6 +83,34 @@ describe("Authentication API", () => {
       expect(response.body).toEqual(
         expect.objectContaining({
           success: false,
+        })
+      );
+    });
+
+    it("should login successfully with valid credentials", async () => {
+      // Pehle register karo
+      await request(app)
+        .post("/api/v1/auth/register")
+        .send({
+          name: "Login User",
+          email: "loginuser@example.com",
+          password: "Test@1234",
+          phone: "9876543211",
+        });
+
+      // Phir login karo
+      const response = await request(app)
+        .post("/api/v1/auth/login")
+        .send({
+          email: "loginuser@example.com",
+          password: "Test@1234",
+        })
+        .expect("Content-Type", /json/)
+        .expect(200);
+
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          success: true,
         })
       );
     });
