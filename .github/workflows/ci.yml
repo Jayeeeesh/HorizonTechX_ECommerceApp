@@ -135,7 +135,9 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ghcr.io/jayeeeesh/rentease-backend:latest
+          tags: |
+            ghcr.io/jayeeeesh/rentease-backend:latest
+            ghcr.io/jayeeeesh/rentease-backend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -144,6 +146,8 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: ghcr.io/jayeeeesh/rentease-frontend:latest
+          tags: |
+            ghcr.io/jayeeeesh/rentease-frontend:latest
+            ghcr.io/jayeeeesh/rentease-frontend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
