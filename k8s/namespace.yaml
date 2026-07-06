@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rentease
+  labels:
+    app.kubernetes.io/name: rentease
+    app.kubernetes.io/part-of: rentease
+    app.kubernetes.io/managed-by: kubectl
+    environment: development

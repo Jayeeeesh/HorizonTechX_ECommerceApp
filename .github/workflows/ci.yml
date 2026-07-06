@@ -135,6 +135,7 @@ jobs:
         with:
           context: ./server
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/jayeeeesh/rentease-backend:latest
             ghcr.io/jayeeeesh/rentease-backend:${{ github.sha }}
@@ -146,6 +147,7 @@ jobs:
         with:
           context: ./client
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/jayeeeesh/rentease-frontend:latest
             ghcr.io/jayeeeesh/rentease-frontend:${{ github.sha }}
