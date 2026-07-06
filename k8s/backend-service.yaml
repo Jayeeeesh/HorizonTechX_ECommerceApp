@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: rentease-backend
+  namespace: rentease
+  labels:
+    app.kubernetes.io/name: rentease-backend
+    app.kubernetes.io/part-of: rentease
+    app.kubernetes.io/component: backend
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: rentease-backend
+
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: http
+
+  sessionAffinity: None
+  ipFamilyPolicy: SingleStack
+  ipFamilies:
+    - IPv4
