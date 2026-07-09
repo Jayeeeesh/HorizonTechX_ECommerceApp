@@ -1,22 +1,52 @@
 services:
+  mongo:
+    image: mongo:7
+    container_name: rentease-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - rentease-network
+
   backend:
     build:
       context: ./server
       dockerfile: Dockerfile
+    container_name: rentease-backend
+    restart: unless-stopped
     ports:
       - "8000:8000"
     env_file:
       - ./server/.env
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://mongo:27017/rentease
+    depends_on:
+      - mongo
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 15s
+    networks:
+      - rentease-network
 
   frontend:
     build:
       context: ./client
       dockerfile: Dockerfile
+    container_name: rentease-frontend
+    restart: unless-stopped
     ports:
       - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - rentease-network
+
+volumes:
+  mongo_data:
